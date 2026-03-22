@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Escreva um programa que dados 15 números, imprima seus quadrados, obs: você não precisa necessariamente imprimir no final.
 #define arr_len 15
 
 int main(void) {
