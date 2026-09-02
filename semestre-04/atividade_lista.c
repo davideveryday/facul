@@ -6,10 +6,20 @@
 #define MAX 4
 #define TAM_NOME 100
 
-char* lista[MAX];
+struct Fila {
+    int capacidade;
+    char *nomePessoa;
+    int primeiro;
+    int ultimo;
+    int quantidade;
+};
 
-void adicionaPessoa(char *nome) {
-    lista[0] = nome;
+void criarFila(struct Fila *f, unsigned int c) {
+    f->capacidade = c;
+	f->nomePessoa = (char *) malloc(f->capacidade * sizeof(char));
+	f->primeiro = 0;
+	f->ultimo = -1;
+	f->quantidade = 0;
 }
 
 // v1 -> lista fixa 
@@ -17,7 +27,10 @@ void main(void) {
 	setlocale(LC_ALL, "Portuguese");
 
     int opcao;
-    char nome[TAM_NOME];
+    char *nome;
+    struct Fila f;
+
+    criarFila(&f, MAX);
 
     while(1) {
 		printf("\n1 - Adicionar pessoa\n2 - Remover pessoa");
@@ -30,14 +43,11 @@ void main(void) {
 			case 1:
                 printf("\n--> ");
                 fgets(nome, TAM_NOME, stdin);
-                printf("%s", nome);
-                // adicionaPessoa(nome);
 				break;
 			case 2:
                 printf("\nOpt 2");
 				break;
 			case 3:
-                printf("\nOpt 3");
 				break;
 			default:
 				printf("\n Opção inválida!");	
