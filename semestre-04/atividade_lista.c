@@ -1,25 +1,52 @@
 #include <stdio.h>
 #include <locale.h>
 #include <stdlib.h>
+#include <string.h>
 
 // constantes
 #define MAX 4
 #define TAM_NOME 100
 
-struct Fila {
+typedef struct {
     int capacidade;
-    char *nomePessoa;
+    char (*pessoas)[TAM_NOME];
     int primeiro;
     int ultimo;
-    int quantidade;
-};
+    int tamanho;
+} Fila;
 
-void criarFila(struct Fila *f, unsigned int c) {
+void criarFila(Fila *f, unsigned int c) {
     f->capacidade = c;
-	f->nomePessoa = (char *) malloc(f->capacidade * sizeof(char));
+	f->pessoas = malloc(c * sizeof(*f->pessoas));
 	f->primeiro = 0;
 	f->ultimo = -1;
-	f->quantidade = 0;
+	f->tamanho = 0;
+}
+
+void adicionarPessoa(Fila *f, char *nome) {
+	// ve se a fila tem espaço
+	// se sim ve onde tem espaço
+	// adiciona a pessoa naquele lugar da fila
+	// atualiza o ultimo elemento
+	if (f->ultimo == f->capacidade - 1) f->ultimo = -1;
+	f->ultimo++;
+	strcpy(f->pessoas[f->ultimo], nome);
+	f->tamanho++;
+	
+}
+
+void imprimirFila(Fila *f) {
+	int contador, i;
+
+	for (contador = 0, i = f->primeiro; contador < f->tamanho; contador++) {
+		printf("%s\t", f->pessoas[i++]);
+		if (i == f->capacidade) i=0;
+	}
+
+}
+
+int taCheia(Fila *f) {
+	return (f->tamanho == f->capacidade);
 }
 
 // v1 -> lista fixa 
@@ -28,7 +55,7 @@ void main(void) {
 
     int opcao;
     char *nome;
-    struct Fila f;
+    Fila f;
 
     criarFila(&f, MAX);
 
@@ -43,11 +70,13 @@ void main(void) {
 			case 1:
                 printf("\n--> ");
                 fgets(nome, TAM_NOME, stdin);
+				adicionarPessoa(&f, nome);
 				break;
 			case 2:
                 printf("\nOpt 2");
 				break;
 			case 3:
+				imprimirFila(&f);
 				break;
 			default:
 				printf("\n Opção inválida!");	
